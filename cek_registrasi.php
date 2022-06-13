@@ -25,7 +25,7 @@ if ($umur > 17) {
                                       email= '$_POST[email]',
                                       telp='$_POST[telp]',
                                       alamat='$_POST[alamat]'";
-    mysql_query($simpan);
+    mysqli_query($conn, $simpan);
     echo '<script language="javascript">
     alert("Anda Berhasil Melakukan Registrasi");
     window.location="index";
@@ -38,4 +38,3 @@ if ($umur > 17) {
 }
 // $tgl = $_POST['tgl_lahir'];
 // var_dump($tgl);
-?>

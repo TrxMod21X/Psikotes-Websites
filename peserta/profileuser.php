@@ -22,8 +22,7 @@
           <span class="menu-collapsed">Soal</span>
         </div>
       </a>
-      <a href="http://localhost/psikotes/peserta/logout.php"
-        class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+      <a href="http://localhost/psikotes/peserta/logout.php" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <span class="fa fa-sign-out-alt fa-fw mr-3"></span>
           <span class="menu-collapsed">Keluar</span>
@@ -34,21 +33,21 @@
 
   <!-- MAIN -->
   <?php
-	include "config/koneksi.php";
-	$qry=mysql_query("SELECT * FROM tbl_user WHERE id_user='$_SESSION[iduser]'");
-	$t=mysql_fetch_array($qry);
+  include "config/koneksi.php";
+  $qry = mysqli_query($conn, "SELECT * FROM tbl_user WHERE id_user='$_SESSION[iduser]'");
+  $t = mysqli_fetch_array($qry);
 
-  if(isset($_POST['submit'])){
-    $update="UPDATE tbl_user set username='".$_POST['username']."',password='".md5($_POST['password'])."',nama='".$_POST['nama']."',tgl_lahir='".$_POST['tgl_lahir']."',jk='".$_POST['jk']."',email='".$_POST['email']."',telp='".$_POST['telp']."',alamat='".$_POST['alamat']."' where id_user='".$_SESSION['iduser']."' ";
-    mysql_query($update);
-  
+  if (isset($_POST['submit'])) {
+    $update = "UPDATE tbl_user set username='" . $_POST['username'] . "',password='" . md5($_POST['password']) . "',nama='" . $_POST['nama'] . "',tgl_lahir='" . $_POST['tgl_lahir'] . "',jk='" . $_POST['jk'] . "',email='" . $_POST['email'] . "',telp='" . $_POST['telp'] . "',alamat='" . $_POST['alamat'] . "' where id_user='" . $_SESSION['iduser'] . "' ";
+    mysqli_query($conn, $update);
+
     echo '<script language="javascript">
     alert("Anda Berhasil Merubah data");
     window.location="media.php?hal=profiluser";
     </script>';
     exit();
-}
-?>
+  }
+  ?>
   <div class="col">
     <div id="page-wrapper">
       <div class="container-fluid mt-3">
@@ -63,7 +62,7 @@
         <div class="row">
           <div class="col-lg-12">
 
-            <div class="card-header bg-danger text-white">
+            <div class="card-header bg-info text-white">
               Profil Peserta
             </div>
             <div class="card-body">
@@ -75,8 +74,7 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="username">Nama Pengguna</label>
-                    <input type="text" class="form-control" id="username" name="username"
-                      value="<?php echo $t['username'] ?>">
+                    <input type="text" class="form-control" id="username" name="username" value="<?php echo $t['username'] ?>">
                   </div>
                   <div class="form-group col-md-6">
                     <label for="password">Kata Sandi</label>
@@ -90,8 +88,7 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label for="tgl_lahir">Tanggal Lahir (YYYY-MM-DD)</label>
-                    <input type="text" class="form-control" id="tgl_lahir" name="tgl_lahir"
-                      value="<?php echo $t['tgl_lahir'] ?>">
+                    <input type="text" class="form-control" id="tgl_lahir" name="tgl_lahir" value="<?php echo $t['tgl_lahir'] ?>">
                   </div>
                 </div>
                 <div class="form-row">
@@ -117,8 +114,7 @@
                 </div>
                 <div class="form-row mt-4">
                   <div class="form-group col-md-4">
-                    <button class="btn btn-success" type="submit" name="submit"><i
-                        class="fa fa-save mr-2"></i>Simpan</button>
+                    <button class="btn btn-success" type="submit" name="submit"><i class="fa fa-save mr-2"></i>Simpan</button>
                   </div>
                 </div>
               </form>
@@ -137,10 +133,7 @@
 
 <script type="text/javascript">
   var $ = jQuery;
-  $('#jk').val('<?php echo $t['
-    jk '];?>');
-  $('#agama').val('<?php echo $t['
-    agama '];?>');
-  $('#kwgn').val('<?php echo $t['
-    kwgn '];?>');
+  $('#jk').val('<?php echo $t['jk']; ?>');
+  $('#agama').val('<?php echo $t['agama']; ?>');
+  $('#kwgn').val('<?php echo $t['kwgn']; ?>');
 </script>

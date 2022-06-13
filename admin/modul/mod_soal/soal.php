@@ -84,7 +84,7 @@
                 echo "<a href=../../index.php><b>LOGIN</b></a></center>";
               } else {
                 $aksi = "modul/mod_soal/aksi_soal.php";
-                switch ($_GET[act]) {
+                switch ($_GET['act']) {
                     // Tampil Soal
                   default:
                     // Tombol Tambah Soal
@@ -107,8 +107,8 @@
         <input class='form-control' type=text name='cari'  placeholder='Masukkan Pertanyaan' list='auto'  required/>
         <button class='btn btn-success ml-3' type='submit'><i class='fa fa-search mr-1'></i>Cari</button></div></div>";
                     echo "<datalist id='auto'>";
-                    $qry = mysql_query("SELECT * FROM tbl_soal");
-                    while ($t = mysql_fetch_array($qry)) {
+                    $qry = mysqli_query($conn, "SELECT * FROM tbl_soal");
+                    while ($t = mysqli_fetch_array($qry)) {
                       echo "<option value='$t[soal]'>";
                     }
                     echo "</datalist></form>
@@ -116,10 +116,10 @@
                     //Tampil Data Soal    
                     echo " <table class='table table-hover '>
           <thead><tr align='center'><th>No</th><th>Pertanyaan</th><th>Status</th><th>Aksi</th><th>Lihat</th><th>Status</th></tr></thead>";
-                    $tampil = mysql_query("SELECT * FROM tbl_soal ORDER BY id_soal DESC");
+                    $tampil = mysqli_query($conn, "SELECT * FROM tbl_soal ORDER BY id_soal DESC");
                     $no = 1;
-                    while ($r = mysql_fetch_array($tampil)) {
-                      $soal = substr($r[soal], 0, 50);
+                    while ($r = mysqli_fetch_array($tampil)) {
+                      $soal = substr($r['soal'], 0, 50);
                       echo "<tr><td>$no</td>
              <td>$soal..</td>
        <td align='center'>$r[aktif]</td>
@@ -127,7 +127,7 @@
         <a class='btn btn-outline-primary' href=?module=soal&act=editsoal&id=$r[id_soal] role='button'><i class='fa fa-edit mr-1'></i>Edit</a> | 
         <a class='btn btn-outline-danger' href=$aksi?module=soal&act=hapus&id=$r[id_soal] role='button'><i class='fa fa-trash mr-1'></i>Hapus</a></td>
         <td> <a class='btn btn-outline-info' href='?module=soal&act=viewsoal&id=$r[id_soal]' ><i class='fa fa-eye mr-1'></i>Lihat</a></td>";
-                      if ($r[aktif] == "Y") {
+                      if ($r['aktif'] == "Y") {
                         echo "<td><input type=button class='btn btn-outline-dark' value='Non Aktifkan' onclick=\"window.location.href='$aksi?module=soal&act=nonaktif&id=$r[id_soal]';\"></td>";
                       } else {
                         echo "<td align='center'><input class='btn btn-outline-success' type=button value='Aktifkan' onclick=\"window.location.href='$aksi?module=soal&act=aktif&id=$r[id_soal]';\"></td>";
@@ -221,8 +221,8 @@
 
                     // Form Edit Soal  
                   case "editsoal":
-                    $edit = mysql_query("SELECT * FROM tbl_soal WHERE id_soal='$_GET[id]'");
-                    $r = mysql_fetch_array($edit);
+                    $edit = mysqli_query($conn, "SELECT * FROM tbl_soal WHERE id_soal='$_GET[id]'");
+                    $r = mysqli_fetch_array($edit);
 
                     echo "<h2 class='mb-3'><i class='fa fa-edit mr-2'></i>Edit Soal Tes</h2><hr/>
           <form method=POST action=$aksi?module=soal&act=update class='form-horizontal' enctype='multipart/form-data'>
@@ -234,7 +234,7 @@
                             <textarea name='soal' style='width: 950px; height: 350px;'>$r[soal]</textarea>
                           </div>
                         </div>";
-                    if ($r[gambar] != '') {
+                    if ($r['gambar'] != '') {
 
                       echo "
                         <div class='form-group'>
@@ -317,14 +317,14 @@
                     break;
 
                   case "viewsoal":
-                    $view = mysql_query("SELECT * FROM tbl_soal WHERE id_soal='$_GET[id]'");
-                    $t = mysql_fetch_array($view);
+                    $view = mysqli_query($conn, "SELECT * FROM tbl_soal WHERE id_soal='$_GET[id]'");
+                    $t = mysqli_fetch_array($view);
                     echo "<h2><i class='fa fa-eye mr-2'></i>Detail Soal</h2><hr>
     <div class='container'>
     <a class='btn btn-success mb-4' href='?module=soal'>Kembali</a>
     <h5>Soal Pertanyaan :</h5>
     $t[soal]</br>";
-                    if ($t[gambar] != '') {
+                    if ($t['gambar'] != '') {
                       echo "<img src='../foto/$t[gambar]' class='img-thumbnail mt-2 mb-2'>";
                     }
                     echo "<h5>Jawaban :</h5>
@@ -343,16 +343,16 @@
        <a class='btn btn-success mt-1 mb-1' href='?module=soal' role='button'><i class='fa fa-sign-out-alt mr-1'></i>Kembali</a>
      <table class='table table-hover mt-3'>
           <thead><tr align='center'><th>No</th><th>Pertanyaan</th><th>Status</th><th>Aksi</th><th>Status</th><th>Lihat</th></tr></thead>";
-                    $tampil = mysql_query("SELECT * FROM tbl_soal WHERE soal LIKE '%$_POST[cari]%'");
+                    $tampil = mysqli_query($conn, "SELECT * FROM tbl_soal WHERE soal LIKE '%$_POST[cari]%'");
                     $no = 1;
-                    while ($r = mysql_fetch_array($tampil)) {
+                    while ($r = mysqli_fetch_array($tampil)) {
                       echo "<tr><td align='center'>$no</td>
              <td>$r[soal]</td>
        <td align='center'>$r[aktif]</td>
              <td align='center'>
         <a class='btn btn-outline-primary' href=?module=soal&act=editsoal&id=$r[id_soal] role='button'><i class='fa fa-edit mr-1'></i></a>
         <a class='btn btn-outline-danger' href=$aksi?module=soal&act=hapus&id=$r[id_soal] role='button'><i class='fa fa-trash mr-1'></i></a></td>";
-                      if ($r[aktif] == "Y") {
+                      if ($r['aktif'] == "Y") {
                         echo "<td align='center'><input class='btn btn-outline-dark' type=button value='Non Aktifkan' onclick=\"window.location.href='$aksi?module=soal&act=nonaktif&id=$r[id_soal]';\"></td>";
                       } else {
                         echo "<td align='center'><input class='btn btn-success' type=button value='Aktifkan' onclick=\"window.location.href='$aksi?module=soal&act=aktif&id=$r[id_soal]';\"></td>";

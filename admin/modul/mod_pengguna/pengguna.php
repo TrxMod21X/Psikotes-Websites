@@ -22,8 +22,7 @@
           <span class="menu-collapsed">Hasil Tes</span>
         </div>
       </a>
-      <a href="?module=pengaturantes"
-        class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+      <a href="?module=pengaturantes" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <span class="fa fa-tools fa-fw mr-3"></span>
           <span class="menu-collapsed">Pengaturan Tes</span>
@@ -47,8 +46,7 @@
           <span class="menu-collapsed">Tentang</span>
         </div>
       </a>
-      <a href="http://localhost/psikotes/admin/logout.php"
-        class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+      <a href="http://localhost/psikotes/admin/logout.php" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <span class="fa fa-sign-out-alt fa-fw mr-3"></span>
           <span class="menu-collapsed">Keluar</span>
@@ -80,14 +78,14 @@
 
 
               <?php
-$aksi="modul/mod_pengguna/aksi_pengguna.php";
-switch($_GET[act]){
-  // Tampil Menuatas
-  default:
-    $sql  = mysql_query("SELECT * FROM tbl_admin");
-    $r    = mysql_fetch_array($sql);
+              $aksi = "modul/mod_pengguna/aksi_pengguna.php";
+              switch ($_GET['act']) {
+                  // Tampil Menuatas
+                default:
+                  $sql  = mysqli_query($conn, "SELECT * FROM tbl_admin");
+                  $r    = mysqli_fetch_array($sql);
 
-    echo "
+                  echo "
         <h3>Perbarui Pengguna</h3>
         <hr>
           <form method=POST enctype='multipart/form-data' action=$aksi?module=pengguna&act=update class='form-horizontal'>
@@ -124,10 +122,9 @@ switch($_GET[act]){
           
 
          </form>";
-    break;  
-  
-}
-?>
+                  break;
+              }
+              ?>
 
             </div>
 

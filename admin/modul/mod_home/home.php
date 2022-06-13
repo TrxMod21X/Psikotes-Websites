@@ -3,23 +3,23 @@ session_start();
 include "../../../config/koneksi.php";
 include "../../../config/fungsi_thumb.php";
 
-$module = $_GET[module];
-$act = $_GET[act];
+$module = $_GET['module'];
+$act = $_GET['act'];
 
-$sql_nilai_l  = mysql_query("SELECT count(*) as jum FROM tbl_nilai WHERE keterangan='Lulus'");
-$r_nilai_l    = mysql_fetch_array($sql_nilai_l);
+$sql_nilai_l  = mysqli_query($conn, "SELECT count(*) as jum FROM tbl_nilai WHERE keterangan='Lulus'");
+$r_nilai_l    = mysqli_fetch_array($sql_nilai_l);
 $lulus = $r_nilai_l['jum'];
 
-$sql_nilai_tl  = mysql_query("SELECT count(*) as jum FROM tbl_nilai WHERE keterangan='Tidak Lulus'");
-$r_nilai_tl    = mysql_fetch_array($sql_nilai_tl);
+$sql_nilai_tl  = mysqli_query($conn, "SELECT count(*) as jum FROM tbl_nilai WHERE keterangan='Tidak Lulus'");
+$r_nilai_tl    = mysqli_fetch_array($sql_nilai_tl);
 $tidak_lulus = $r_nilai_tl['jum'];
 
-$sql_user  = mysql_query("SELECT count(*) as jum FROM tbl_user WHERE statusaktif='Y'");
-$r_user    = mysql_fetch_array($sql_user);
+$sql_user  = mysqli_query($conn, "SELECT count(*) as jum FROM tbl_user WHERE statusaktif='Y'");
+$r_user    = mysqli_fetch_array($sql_user);
 $total_user = $r_user['jum'];
 
-$sql_soal  = mysql_query("SELECT count(*) as jum FROM tbl_soal WHERE aktif='Y'");
-$r_soal    = mysql_fetch_array($sql_soal);
+$sql_soal  = mysqli_query($conn, "SELECT count(*) as jum FROM tbl_soal WHERE aktif='Y'");
+$r_soal    = mysqli_fetch_array($sql_soal);
 $total_soal = $r_soal['jum'];
 
 ?>
@@ -117,7 +117,7 @@ $total_soal = $r_soal['jum'];
                 <!-- Header Menu card -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="card-header bg-danger text-white">
+                        <div class="card-header bg-info text-white">
                             <span class="fas fa-home fa-fw mr-3"></span>Beranda
                         </div>
                     </div>

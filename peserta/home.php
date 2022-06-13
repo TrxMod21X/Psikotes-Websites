@@ -30,7 +30,7 @@
             </a>
         </ul>
     </div> <!-- End Sidebar -->
-   
+
     <!-- MAIN -->
     <div class="col">
         <!-- Page Content -->
@@ -47,16 +47,16 @@
                 <div class="row">
                     <div class="col-lg-12">
 
-                        <div class="card-header bg-danger text-white">
+                        <div class="card-header bg-info text-white">
                             Peraturan
                         </div>
                         <div class="card-body">
 
                             <?php
-                            $result = mysql_query("select * from tbl_soal WHERE aktif='Y'");
-                            $hitung = mysql_num_rows($result);
-                            $qry = mysql_query("SELECT * FROM tbl_pengaturan_tes");
-                            $r = mysql_fetch_array($qry);
+                            $result = mysqli_query($conn, "SELECT * FROM tbl_soal WHERE aktif='Y'");
+                            $hitung = mysqli_num_rows($result);
+                            $qry = mysqli_query($conn, "SELECT * FROM tbl_pengaturan_tes");
+                            $r = mysqli_fetch_array($qry);
 
                             echo "
 		<h3 align='center'>$r[nama_tes]</h3><hr/><br/>

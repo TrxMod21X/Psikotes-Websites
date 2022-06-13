@@ -21,24 +21,8 @@
 
 <body>
   <?php
-include "config/koneksi.php";
-// if(isset($_POST['submit'])){
-//     $simpan="INSERT INTO tbl_user SET username='$_POST[username]',
-//                                       password='".md5($_POST[password])."',
-//                                       nama='$_POST[nama]',
-//                                       tgl_lahir='$_POST[tgl_lahir]',
-//                                       jk='$_POST[jk]',
-//                                       email= '$_POST[email]',
-//                                       telp='$_POST[telp]',
-//                                       alamat='$_POST[alamat]'";
-//     mysql_query($simpan);
-//     echo '<script language="javascript">
-//     alert("Anda Berhasil Melakukan Registrasi");
-//     window.location="index";
-//     </script>';
-//     exit();
-// }
-?>
+  include "config/koneksi.php";
+  ?>
   <div class="container">
     <div class="row">
       <div class="col-sm-9 col-md-7 col-lg mx-auto">
@@ -49,17 +33,15 @@ include "config/koneksi.php";
               PENDAFTARAN
             </h5>
             <hr />
-            <form name="form" action="umur.php" id="loginF" method="post">
+            <form name="form" action="cek_registrasi.php" id="loginF" method="post">
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="username">Nama Pengguna</label>
-                  <input type="text" class="form-control" id="username" name="username" placeholder="Nama Pengguna"
-                    Required>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Nama Pengguna" Required>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="password">Kata Sandi</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Kata Sandi"
-                    Required>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Kata Sandi" Required>
                 </div>
               </div>
               <div class="form-row">
@@ -69,8 +51,7 @@ include "config/koneksi.php";
                 </div>
                 <div class="form-group col-md-6">
                   <label for="tgl_lahir">Tanggal Lahir (YYYY-MM-DD)</label>
-                  <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" placeholder="1997-12-03"
-                    Required>
+                  <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" placeholder="1997-12-03" Required>
                 </div>
               </div>
               <div class="form-row">
@@ -83,8 +64,7 @@ include "config/koneksi.php";
                 </div>
                 <div class="form-group col-md-6">
                   <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="contoh@psikotes.com"
-                    Required>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="contoh@psikotes.com" Required>
                 </div>
                 <div class="form-group col-md-4">
                   <label for="telp">No Telepon</label>

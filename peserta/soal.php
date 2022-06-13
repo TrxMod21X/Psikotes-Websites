@@ -53,26 +53,26 @@
 
 							<?php
 
-							if (empty($_SESSION[username]) and empty($_SESSION[passuser])) {
+							if (empty($_SESSION['username']) and empty($_SESSION['passuser'])) {
 								echo "<link href='style.css' rel='stylesheet' type='text/css'>
  <center>Untuk mengakses modul, Anda harus login <br>";
 								echo "<a href=index.php><b>LOGIN</b></a></center>";
 							} else {
 								//Lakukan Pengecekan Apakah Sudah Pernah Mengerjakan Soal atau belum
-								$cek = mysql_num_rows(mysql_query("SELECT id_user FROM tbl_nilai WHERE id_user='$_SESSION[iduser]'"));
+								$cek = mysqli_num_rows(mysqli_query($conn, "SELECT id_user FROM tbl_nilai WHERE id_user='$_SESSION[iduser]'"));
 								if ($cek > 0) {
-									$tampil = mysql_query("SELECT * FROM tbl_nilai WHERE id_user='$_SESSION[iduser]'");
-									$t = mysql_fetch_array($tampil);
+									$tampil = mysqli_query($conn, "SELECT * FROM tbl_nilai WHERE id_user='$_SESSION[iduser]'");
+									$t = mysqli_fetch_array($tampil);
 									$username =  ucwords($_SESSION['username']);;
 
 									echo "<h3 align='center' style='border:0';><b>$username</b> telah menyelesaikan Tes Psikotes Online</h3>";
 									echo "<br><div align='center'>
 		 <table><tr><th colspan=3>Hasil Tes Psikotes Online Anda</th></tr>
 		 <tr><td>Jumlah Jawaban Benar</td><td> : $t[benar]</td>";
-									$qry = mysql_query("SELECT nilai_min FROM tbl_pengaturan_tes");
-									$hasil = mysql_fetch_array($qry);
+									$qry = mysqli_query($conn, "SELECT nilai_min FROM tbl_pengaturan_tes");
+									$hasil = mysqli_fetch_array($qry);
 									$cek = $hasil['nilai_min'];
-									if ($t[score] >= $cek) {
+									if ($t['score'] >= $cek) {
 										echo "<td rowspan='4'><h1 class='ml-5 text-success'>LULUS</h1></td></tr>";
 									} else {
 										echo "<td rowspan='4'><h1 class='ml-5 text-danger'>TIDAK LULUS</h1></td></tr>";
@@ -88,10 +88,10 @@
 									echo '<table class="table" border="0">';
 
 									include "../config/koneksi.php";
-									$hasil = mysql_query("select * from tbl_soal WHERE aktif='Y' ORDER BY RAND ()");
-									$jumlah = mysql_num_rows($hasil);
+									$hasil = mysqli_query($conn, "SELECT * FROM tbl_soal WHERE aktif='Y' ORDER BY RAND ()");
+									$jumlah = mysqli_num_rows($hasil);
 									$urut = 0;
-									while ($row = mysql_fetch_array($hasil)) {
+									while ($row = mysqli_fetch_array($hasil)) {
 										$id = $row["id_soal"];
 										$pertanyaan = $row["soal"];
 										$pilihan_a = $row["a"];
@@ -179,13 +179,13 @@
 										</p>
 						</div>
 						<?php
-									$qry = mysql_query("SELECT * FROM tbl_pengaturan_tes");
-									$r = mysql_fetch_array($qry);
+									$qry = mysqli_query($conn, "SELECT * FROM tbl_pengaturan_tes");
+									$r = mysqli_fetch_array($qry);
 						?>
 
 						<?php
-									$data = mysql_query("SELECT waktu FROM tbl_pengaturan_tes");
-									$waktu = mysql_fetch_array($data);
+									$data = mysqli_query($conn, "SELECT waktu FROM tbl_pengaturan_tes");
+									$waktu = mysqli_fetch_array($data);
 						?>
 						<script>
 							var detik = 05;

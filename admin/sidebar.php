@@ -1,4 +1,3 @@
-
 <!-- Start Sidebar -->
 <nav class="navbar navbar-expand-md navbar-dark bg-info">
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +25,5 @@
       
     </ul>
   </div> -->
-  
+
 </nav>
-
-

@@ -5,5 +5,3 @@ session_destroy();
 	alert("Terima kasih . Anda Berhasil Logout");
 	window.location="index.php";
 	</script>';
-
-?>
