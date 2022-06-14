@@ -129,7 +129,7 @@ $total_soal = $r_soal['jum'];
                     <div class="row mt-1">
                         <!-- Kotak Peserta Lulus -->
                         <div class="col-lg-3 col-md-6">
-                            <a href="media?module=hasiltes&act=lulus">
+                            <a href="media.php?module=hasiltes&act=lulus">
                                 <div class="card text-white">
                                     <div class="card-header green">
                                         <div class="row">

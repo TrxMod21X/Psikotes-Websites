@@ -1,5 +1,5 @@
-<!-- Sidebar -->
 <div class="row" id="body-row">
+  <!-- Sidebar -->
   <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
     <ul class="list-group">
       <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
@@ -47,15 +47,15 @@
           <span class="menu-collapsed">Tentang</span>
         </div>
       </a>
-      <a href="http://localhost/psikotes/admin/logout.php" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+      <a href="http://18.139.84.68/psikotes/admin/logout.php" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <span class="fa fa-sign-out-alt fa-fw mr-3"></span>
           <span class="menu-collapsed">Keluar</span>
         </div>
       </a>
     </ul>
-  </div> <!-- End Sidebar -->
-
+  </div>
+  <!-- Akhir Sidebar -->
   <!-- MAIN -->
   <div class="col">
     <div id="page-wrapper">
@@ -383,8 +383,7 @@
 
   <script type="text/javascript">
     var $ = jQuery;
-    $('#knc_jawaban').val('<?php echo $r['
-      knc_jawaban ']; ?>');
+    $('#knc_jawaban').val('<?php echo $r['knc_jawaban']; ?>');
   </script>
 </div>
 </div>
