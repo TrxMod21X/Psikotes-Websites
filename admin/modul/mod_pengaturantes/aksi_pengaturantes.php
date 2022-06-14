@@ -3,12 +3,12 @@ session_start();
 include "../../../config/koneksi.php";
 include "../../../config/fungsi_thumb.php";
 
-$module=$_GET[module];
-$act=$_GET[act];
+$module=$_GET['module'];
+$act=$_GET['act'];
 
 // Update pengaturantes
 if ($module=='pengaturantes' AND $act=='update'){
-    mysql_query("UPDATE tbl_pengaturan_tes SET nama_tes = '$_POST[nama_tes]',		
+    mysqli_query($conn, "UPDATE tbl_pengaturan_tes SET nama_tes = '$_POST[nama_tes]',		
 								waktu = '$_POST[waktu]',
 								nilai_min = '$_POST[nilai_min]',
 								peraturan = '$_POST[peraturan]'
