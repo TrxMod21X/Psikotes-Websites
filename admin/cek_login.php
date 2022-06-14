@@ -14,7 +14,7 @@ if ($jumpa > 0) {
 	session_start();
 	$_SESSION['username'] = $r['username'];
 	$_SESSION['idadmin'] = $r['id_admin'];
-	header('Location:media?module=home');
+	header('Location:media.php?module=home');
 } else {
 	echo '<script language="javascript">
 	alert("Userid atau Password Yang anda Masukkan Salah atau Acount Sudah Diblokir");
