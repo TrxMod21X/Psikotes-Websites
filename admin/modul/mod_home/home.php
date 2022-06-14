@@ -23,8 +23,8 @@ $r_soal    = mysqli_fetch_array($sql_soal);
 $total_soal = $r_soal['jum'];
 
 ?>
-<!-- Sidebar -->
 <div class="row" id="body-row">
+    <!-- Sidebar -->
     <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
         <ul class="list-group">
             <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
@@ -79,7 +79,8 @@ $total_soal = $r_soal['jum'];
                 </div>
             </a>
         </ul>
-    </div> <!-- Akhir Sidebar -->
+    </div>
+     <!-- Akhir Sidebar -->
 
     <!-- Header Aplikasi Psikotes Online -->
     <div class="col">
