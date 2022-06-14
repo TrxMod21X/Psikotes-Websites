@@ -125,9 +125,6 @@
               <input type='submit' value='Perbarui' class='btn btn-primary'>
             </div>
           </div>
-
-          
-
          </form>";
                   break;
               }
