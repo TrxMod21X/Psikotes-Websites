@@ -85,7 +85,7 @@
                                     $tampil = mysqli_query($conn, "SELECT * FROM tbl_nilai,tbl_user WHERE tbl_nilai.id_user=tbl_user.id_user");
                                     echo "<div class='row'>
       <div class='col-lg-6'>
-          <a class='btn btn-warning' href='cetak/cetakhasiltes' role='button' target='_blank' rel='noopener noreferrer'><span class='fa fa-print fa-fw mr-3'></span>Cetak</a>
+          <a class='btn btn-warning' href='cetak/cetakhasiltes.php' role='button' target='_blank' rel='noopener noreferrer'><span class='fa fa-print fa-fw mr-3'></span>Cetak</a>
           <a class='btn btn-success' href=?module=hasiltes&act=lulus role='button'><i class='fa fa-user-check fa-fw mr-3'></i>Peserta Lulus</a>
           <a class='btn btn-danger' href=?module=hasiltes&act=tidaklulus role='button'><i class='fa fa fa-user-slash fa-fw mr-3'></i>Peserta Tidak Lulus</a>      
           </div>
