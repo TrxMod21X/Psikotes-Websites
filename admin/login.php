@@ -22,7 +22,7 @@
           <div class="card-body">
             <!-- <h5 class="card-title text-center"><img src="../asset/img/1.jpg" alt="" style="height: 50px;"> APLIKASI PSIKOTES ONLINE</h5> -->
             <h5 class="card-title text-center">PSIKOTES ONLINE ADMIN PANEL</h5>
-            <form class="form-signin" name="form" action="cek_login" id="loginF" method="post">
+            <form class="form-signin" name="form" action="cek_login.php" id="loginF" method="post">
               <div class="form-label-group">
                 <input type="text" id="username" name="username" class="form-control" placeholder="Nama Pengguna" required autofocus>
                 <label for="username">Nama Pengguna</label>
