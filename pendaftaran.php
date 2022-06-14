@@ -81,7 +81,7 @@
                 </label>
               </div>
               <button type="submit" class="btn btn-success" name="submit">Daftar</button>
-              <a class="btn btn-danger" href="index">Masuk</a>
+              <a class="btn btn-danger" href="index.php">Masuk</a>
             </form>
           </div>
         </div>

@@ -18,7 +18,7 @@ if ($jumpa > 0) {
 } else {
 	echo '<script language="javascript">
 	alert("Userid atau Password Yang anda Masukkan Salah atau Acount Sudah Diblokir");
-	window.location="index";
+	window.location="index.php";
 	</script>';
 	exit();
 }
