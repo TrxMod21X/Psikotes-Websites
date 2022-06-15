@@ -2,13 +2,14 @@
 include "config/koneksi.php";
 
 // fungsi ngitungna
-function hitung_umur($tgl) {
-    list($year,$month,$day) = explode("-",$tgl);
+function hitung_umur($tgl)
+{
+    list($year, $month, $day) = explode("-", $tgl);
     $year_diff = date("Y") - $year;
     $month_diff = date("m") - $month;
     $day_diff = date("d") - $day;
     if ($month_diff < 0) $year_diff--;
-        elseif (( $month_diff==0 ) && ($day_diff < 0)) $year_diff--;
+    elseif (($month_diff == 0) && ($day_diff < 0)) $year_diff--;
     return $year_diff;
 }
 $tgl_lahir = $_POST['tgl_lahir'];
@@ -17,14 +18,23 @@ $umur = hitung_umur($tgl_lahir);
 
 // logika umur simpan mun umur
 if ($umur > 17) {
-    $simpan="INSERT INTO tbl_user SET username='$_POST[username]',
-                                      password='".md5($_POST['password'])."',
-                                      nama='$_POST[nama]',
-                                      tgl_lahir='$_POST[tgl_lahir]',
-                                      jk='$_POST[jk]',
-                                      email= '$_POST[email]',
-                                      telp='$_POST[telp]',
-                                      alamat='$_POST[alamat]'";
+    $username = $_POST['username'];
+    $password = md5($_POST['password']);
+    $nama = $_POST['nama'];
+    $tgl = $_POST['tgl_lahir'];
+    $jk = $_POST['jk'];
+    $email = $_POST['email'];
+    $nomor = $_POST['telp'];
+    $alamat = $_POST['alamat'];
+
+    $simpan = "INSERT INTO tbl_user SET username=$username,
+                                      password=$password,
+                                      nama=$nama,
+                                      tgl_lahir=$tgl,
+                                      jk=$jk,
+                                      email=$email,
+                                      telp=$nomor,
+                                      alamat=$alamat";
     mysqli_query($conn, $simpan);
     echo '<script language="javascript">
     alert("Anda Berhasil Melakukan Registrasi");
