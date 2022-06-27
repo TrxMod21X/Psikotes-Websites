@@ -1,7 +1,7 @@
 <?php
 $server = "localhost";
 $username = "root";
-$password = "";
+$password = "@M4kansayur21";
 $database = "biometrika_id";
 
 /// Create connection
