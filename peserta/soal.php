@@ -37,25 +37,13 @@
 			<div class="container-fluid mt-3">
 				<div class="row">
 					<div class="col-lg-12">
-						<!--   <h3 class="page-header"> Peraturan </h3> -->
-
-					</div>
-
-				</div>
-
-				<div class="row">
-					<div class="col-lg-12">
-
 						<div class="card-header bg-info text-white">
 							Soal
 						</div>
 						<div class="card-body">
-
 							<?php
-
 							if (empty($_SESSION['username']) and empty($_SESSION['passuser'])) {
-								echo "<link href='style.css' rel='stylesheet' type='text/css'>
- <center>Untuk mengakses modul, Anda harus login <br>";
+								echo "<link href='style.css' rel='stylesheet' type='text/css'><center>Untuk mengakses modul, Anda harus login <br>";
 								echo "<a href=index.php><b>LOGIN</b></a></center>";
 							} else {
 								//Lakukan Pengecekan Apakah Sudah Pernah Mengerjakan Soal atau belum
@@ -67,23 +55,56 @@
 
 									echo "<h3 align='center' style='border:0';><b>$username</b> telah menyelesaikan Tes Psikotes Online</h3>";
 									echo "<br><div align='center'>
-		 <table><tr><th colspan=3>Hasil Tes Psikotes Online Anda</th></tr>
-		 <tr><td>Jumlah Jawaban Benar</td><td> : $t[benar]</td>";
+												<table>
+													<tr>
+														<th colspan=3>Hasil Tes Psikotes Online Anda</th>
+													</tr>
+													<tr>
+														<td>Jumlah Jawaban Benar</td>
+														<td> : $t[benar]</td>";
+
 									$qry = mysqli_query($conn, "SELECT nilai_min FROM tbl_pengaturan_tes");
 									$hasil = mysqli_fetch_array($qry);
 									$cek = $hasil['nilai_min'];
 									if ($t['score'] >= $cek) {
-										echo "<td rowspan='4'><h1 class='ml-5 text-success'>LULUS</h1></td></tr>";
+										echo 
+														"<td rowspan='4'>
+															<h1 class='ml-5 text-success'>LULUS</h1>
+											  			</td>
+										  			</tr>";
 									} else {
-										echo "<td rowspan='4'><h1 class='ml-5 text-danger'>TIDAK LULUS</h1></td></tr>";
+										echo 			
+														"<td rowspan='4'>
+															<h1 class='ml-5 text-danger'>TIDAK LULUS</h1>
+											 			 </td>
+										 			</tr>";
 									}
 									echo "
-		 <tr><td>Jumlah Jawaban Salah</td><td> : $t[salah]</td></tr>
-		 <tr><td>Jumlah Jawaban Kosong</td><td>: $t[kosong]</td></tr>
-		 <tr><td><b>Nilai anda            </td><td>: $t[score]</b></td></tr></table></div>";
+													<tr>
+														<td>Jumlah Jawaban Salah</td>
+														<td> : $t[salah]</td>
+													</tr>
+													<tr>
+														<td>Jumlah Jawaban Kosong</td>
+														<td>: $t[kosong]</td>
+													</tr>
+													<tr>
+														<td><b>Nilai anda</td><td>: $t[score]</b></td>
+													</tr>
+												</table>
+											</div>";
 								} else {
-									echo '<table><tr><th><i class"fas fa-clock"></i>Waktu Tersisa</th></tr>
-		 <tr><td align=center><span style="font-size:18px"><span id="menit"></span>:<span id="detik"></span></span> </td></tr></table>';
+									echo '
+									<table>
+										<tr>
+											<th><i class"fas fa-clock"></i>Waktu Tersisa</th>
+										</tr>
+		 								<tr>
+										 	<td align=center>
+											 	<span style="font-size:18px"><span id="menit"></span>:<span id="detik"></span></span>
+											</td>
+										</tr>
+									</table>';
 									echo "<div style='width:100%; border: 1px solid #EBEBEB; overflow:scroll;height:700px;'>";
 									echo '<table class="table" border="0">';
 
@@ -100,7 +121,7 @@
 										$pilihan_d = $row["d"];
 										$pilihan_e = $row["e"];
 							?>
-										<form name="form1" method="post" action="?hal=jawaban">
+										<form name="form1" method="post" action="?hal=jawaban.php">
 											<input type="hidden" name="id[]" value=<?php echo $id; ?>>
 											<input type="hidden" name="jumlah" value=<?php echo $jumlah; ?>>
 											<tr>
@@ -170,6 +191,46 @@
 										<?php
 									}
 										?>
+										 <tr>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            <div class="container">
+                                                <div class="row">
+
+                                                    <!-- Back Button -->
+                                                    <div class="col-sm text-left">
+                                                        <?php if ($_GET['page'] != 1) : ?>
+                                                            <a href="<?= prevSoal() ?>">
+                                                                <span style="color: red;">
+                                                                    <i class="fa fa-arrow-circle-left fa-3x mt-2"></i>
+                                                                </span>
+                                                            </a>
+                                                        <?php endif ?>
+                                                    </div>
+
+                                                    <!-- Submit Button -->
+                                                    <?php if ($_GET['page'] == $totalPage) : ?>
+                                                        <div class="col-sm text-center mt-2">
+                                                            <input type="submit" class="btn btn-success" name="complete" value="Jawab" onclick="">
+                                                        </div>
+                                                    <?php endif ?>
+
+
+                                                    <!-- Next Button -->
+                                                    <div class="col-sm text-right">
+                                                        <?php if ($_GET['page'] != $totalPage) : ?>
+                                                            <a href="<?= nextSoal() ?>">
+                                                                <span style="color: blue;">
+                                                                    <i class="fa fa-arrow-circle-right fa-3x mt-2"></i>
+                                                                </span>
+                                                            </a>
+                                                        <?php endif ?>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
 										<tr>
 											<td>&nbsp;</td>
 											<td><input class="btn btn-success" type="submit" name="submit" value="Jawab" onclick="return confirm('Apakah Anda yakin dengan jawaban Anda?')"></td>

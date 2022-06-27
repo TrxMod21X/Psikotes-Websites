@@ -1,74 +1,44 @@
+<?php
+if (!isset($_SESSION['login'])) {
+  header('Location: authentication/auth.php');
+  exit;
+}
+
+$aksi = "modul/mod_soal/aksi_soal.php";
+
+$soals = mysqli_query($conn, "SELECT `soal` FROM `soal`;");
+
+$kategoriSoal = mysqli_query($conn, "SELECT * FROM `kategori_soal`;");
+
+$tblSoal = mysqli_query($conn, "SELECT * FROM `soal` ORDER BY `id` DESC;");
+
+$idFromUrl = isset($_GET['id']) ? $_GET['id'] : 0;
+
+$editSoal = mysqli_query($conn, "SELECT * FROM `soal` WHERE `id` = $idFromUrl;");
+$edit = mysqli_fetch_assoc($editSoal);
+
+$viewSoal = mysqli_query($conn, "SELECT * FROM `soal` WHERE `id` = $idFromUrl;");
+$view = mysqli_fetch_assoc($viewSoal);
+
+$cariSoal = mysqli_query($conn, "SELECT * FROM `soal` WHERE `soal` LIKE '%$_POST[cari]%';");
+$noSoal = 1;
+
+?>
 <div class="row" id="body-row">
   <!-- Sidebar -->
-  <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
-    <ul class="list-group">
-      <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
-        <small>MENU</small>
-      </li>
-      <a href="?module=home" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-          <span class="fas fa-home fa-fw mr-3"></span>
-          <span class="menu-collapsed">Beranda</span>
-        </div>
-      </a>
-      <a href="?module=soal" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-          <span class="fa fa-tasks fa-fw mr-3"></span>
-          <span class="menu-collapsed">Kelola Soal Tes</span>
-        </div>
-      </a>
-      <a href="?module=hasiltes" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-          <span class="fa fa-file-alt fa-fw mr-3"></span>
-          <span class="menu-collapsed">Hasil Tes</span>
-        </div>
-      </a>
-      <a href="?module=pengaturantes" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-          <span class="fa fa-tools fa-fw mr-3"></span>
-          <span class="menu-collapsed">Pengaturan Tes</span>
-        </div>
-      </a>
-      <a href="?module=users" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-          <span class="fa fa-users fa-fw mr-3"></span>
-          <span class="menu-collapsed">Daftar Peserta</span>
-        </div>
-      </a>
-      <a href="?module=pengguna" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-          <span class="fa fa-user-alt fa-fw mr-3"></span>
-          <span class="menu-collapsed">Pengguna</span>
-        </div>
-      </a>
-      <a href="?module=tentang" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-          <span class="fa fa-laptop fa-fw mr-3"></span>
-          <span class="menu-collapsed">Tentang</span>
-        </div>
-      </a>
-      <a href="http://18.139.84.68/psikotes/admin/logout.php" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-          <span class="fa fa-sign-out-alt fa-fw mr-3"></span>
-          <span class="menu-collapsed">Keluar</span>
-        </div>
-      </a>
-    </ul>
-  </div>
+  <?php include 'components/sidebar.php' ?>
   <!-- Akhir Sidebar -->
+
   <!-- MAIN -->
   <div class="col">
     <div id="page-wrapper">
       <div class="container-fluid mt-3">
         <div class="row">
           <div class="col-lg-12">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
             <div class="card-header bg-info text-white">
               Kelola Soal
             </div>
+
             <div class="card-body">
               <script language="JavaScript">
                 function bukajendela(url) {
@@ -76,314 +46,398 @@
                 }
               </script>
 
-              <?php
-              session_start();
-              if (empty($_SESSION['username']) and empty($_SESSION['passuser'])) {
-                echo "<link href='style.css' rel='stylesheet' type='text/css'>
- <center>Untuk mengakses modul, Anda harus login <br>";
-                echo "<a href=../../index.php><b>LOGIN</b></a></center>";
-              } else {
-                $aksi = "modul/mod_soal/aksi_soal.php";
-                switch ($_GET['act']) {
-                    // Tampil Soal
-                  default:
-                    // Tombol Tambah Soal
-                    echo "<div class='row'><div class='col-lg-6'>
-  <input class='btn btn-primary' type=button value='Tambah Soal' 
-  onclick=\"window.location.href='?module=soal&act=tambahsoal';\"></div>";
-                    //Form Pencarian Data
-                    //   echo "
-                    //   <form class='form-inline'>
-                    //   <div class='form-group mx-sm-3 mb-2'>
-                    //     <label for='inputPassword2' class='sr-only'>Password</label>
-                    //     <input type='password' class='form-control' id='inputPassword2' placeholder='Password'>
-                    //   </div>
-                    //   <button type='submit' class='btn btn-primary mb-2'>Confirm identity</button>
-                    // </form>
-                    //   "
-                    echo "<div col-lg-6>
-        <form class='form-inline'method='POST' action=?module=soal&act=carisoal>
-        <div class='form-group mx-sm-3 mb-2'>
-        <input class='form-control' type=text name='cari'  placeholder='Masukkan Pertanyaan' list='auto'  required/>
-        <button class='btn btn-success ml-3' type='submit'><i class='fa fa-search mr-1'></i>Cari</button></div></div>";
-                    echo "<datalist id='auto'>";
-                    $qry = mysqli_query($conn, "SELECT * FROM tbl_soal");
-                    while ($t = mysqli_fetch_array($qry)) {
-                      echo "<option value='$t[soal]'>";
-                    }
-                    echo "</datalist></form>
-      </div>";
-                    //Tampil Data Soal    
-                    echo " <table class='table table-hover '>
-          <thead><tr align='center'><th>No</th><th>Pertanyaan</th><th>Status</th><th>Aksi</th><th>Lihat</th><th>Status</th></tr></thead>";
-                    $tampil = mysqli_query($conn, "SELECT * FROM tbl_soal ORDER BY id_soal DESC");
-                    $no = 1;
-                    while ($r = mysqli_fetch_array($tampil)) {
-                      $soal = substr($r['soal'], 0, 50);
-                      echo "<tr><td>$no</td>
-             <td>$soal..</td>
-       <td align='center'>$r[aktif]</td>
-             <td>
-        <a class='btn btn-outline-primary' href=?module=soal&act=editsoal&id=$r[id_soal] role='button'><i class='fa fa-edit mr-1'></i>Edit</a> | 
-        <a class='btn btn-outline-danger' href=$aksi?module=soal&act=hapus&id=$r[id_soal] role='button'><i class='fa fa-trash mr-1'></i>Hapus</a></td>
-        <td> <a class='btn btn-outline-info' href='?module=soal&act=viewsoal&id=$r[id_soal]' ><i class='fa fa-eye mr-1'></i>Lihat</a></td>";
-                      if ($r['aktif'] == "Y") {
-                        echo "<td><input type=button class='btn btn-outline-dark' value='Non Aktifkan' onclick=\"window.location.href='$aksi?module=soal&act=nonaktif&id=$r[id_soal]';\"></td>";
-                      } else {
-                        echo "<td align='center'><input class='btn btn-outline-success' type=button value='Aktifkan' onclick=\"window.location.href='$aksi?module=soal&act=aktif&id=$r[id_soal]';\"></td>";
-                      }
+              <?php switch ($_GET['act']):
+                default: ?>
+                  <div class="row">
+                    <!-- Button Tambah Soal -->
+                    <div class="col-lg-6">
+                      <input type="button" class="btn btn-primary" value="Tambah Soal" onclick="window.location.href='?module=soal&act=tambahsoal';">
+                    </div>
 
-                      echo "   </td>
-    </tr>";
-                      $no++;
-                    }
-                    echo "</table>";
-                    break;
+                    <!-- Search Soal -->
+                    <div class="col-lg-6">
+                      <form action="?module=soal&act=carisoal" class="form-inline" method="POST">
+                        <div class="form-group mx-sm-3 mb-2">
+                          <input type="text" class="form-control" name="cari" placeholder="Cari Soal" list="auto" required />
+                          <button class='btn btn-success ml-3' type='submit'><i class='fa fa-search mr-1'></i>Cari</button>
+                        </div>
+                        <datalist id="auto">
+                          <?php while ($soal = mysqli_fetch_assoc($soals)) : ?>
+                            <option value="<?= $soal['soal'] ?>"></option>
+                          <?php endwhile; ?>
+                        </datalist>
+                      </form>
+                    </div>
 
-                    // Form Tambah Soal
-                  case "tambahsoal":
-                    echo "<h2 class'mb-3'><i class='fa fa-plus mr-2'></i>Tambah Soal</h2><hr/>
-          <form method=POST class='form-horizontal' action='$aksi?module=soal&act=input' enctype='multipart/form-data'>
+                    <!-- Show Data Soal -->
+                    <table class="table table-hover mt-5 table-bordered">
+                      <thead class="table-dark">
+                        <tr align="center">
+                          <th>No</th>
+                          <th>Pertanyaan</th>
+                          <th>Status</th>
+                          <th>Aksi</th>
+                          <th>Lihat</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <?php $no = 1; ?>
+                      <?php while ($row = mysqli_fetch_assoc($tblSoal)) : ?>
+                        <?php $soal = substr($row['soal'], 0, 50); ?>
+                        <?php $idSoal = $row['id']; ?>
+                        <tr>
+                          <!-- Row Nomor -->
+                          <td><?= $no ?></td>
 
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Soal</label>
-                          <div class='col-sm-10'>
-                            <textarea name='soal' style='width: 950px; height: 350px;'></textarea>
+                          <!-- Row Soal -->
+                          <td><?= $soal ?></td>
+
+                          <!-- Row Status Soal -->
+                          <td align="center"><?= ($row['aktif']) == 'Y' ? 'Aktif' : 'Nonaktif'; ?></td>
+
+                          <!-- Button Aksi Soal -->
+                          <td align="center">
+                            <!-- Button Edit Soal -->
+                            <a href="?module=soal&act=editsoal&id=<?= $idSoal ?>" class="btn btn-outline-primary" role="button">
+                              <i class="fa fa-edit mr-1"></i>
+                              Edit
+                            </a>
+                            |
+                            <!-- Button Hapus Soal -->
+                            <a href="<?= $aksi ?>?module=soal&act=hapus&id=<?= $idSoal ?>" class="btn btn-outline-danger" role="button">
+                              <i class="fa fa-trash mr-1"></i>
+                              Hapus
+                            </a>
+                          </td>
+
+                          <!-- Button Lihat Soal -->
+                          <td align="center">
+                            <a href="?module=soal&act=viewsoal&id=<?= $idSoal; ?>" class="btn btn-outline-info">
+                              <i class="fa fa-eye mr-1"></i>
+                              Lihat
+                            </a>
+                          </td>
+
+                          <?php if ($row['aktif'] == 'Y') : ?>
+                            <!-- Button Non-Aktifkan -->
+                            <td align="center">
+                              <input type="button" class="btn btn-outline-dark" value="Non-Aktifkan" onclick="window.location.href='<?= $aksi ?>?module=soal&act=nonaktif&id=<?= $idSoal; ?>';">
+                            </td>
+
+                            <!-- Button Aktifkan -->
+                          <?php else : ?>
+                            <td align="center">
+                              <input type="button" class="btn btn-outline-success" value="Aktifkan" onclick="window.location.href='<?= $aksi ?>?module=soal&act=aktif&id=<?= $idSoal; ?>';">
+                            </td>
+                          <?php endif; ?>
+                        </tr>
+                        <?php $no++ ?>
+                      <?php endwhile ?>
+                    </table>
+                    <?php break; ?>
+
+                  <?php
+                case "tambahsoal": ?>
+                    <h2 class="mb-3">
+                      <i class="fa fa-plus mr-2"></i>
+                      Tambah Soal
+                    </h2>
+                    <hr>
+                    <form method="POST" class="form-horizontal" action="<?= $aksi ?>?module=soal&act=input" enctype="multipart/form-data">
+                      <!-- SOAL FORM -->
+                      <div class="form-group">
+                        <label for="soal" class="col-sm-2 control-label">Soal</label>
+                        <div class="col-sm-10">
+                          <textarea name="soal" id="soal" style="width: 950px; height: 350px;"></textarea>
+                        </div>
+                      </div>
+
+                      <!-- IMAGE FORM -->
+                      <div class="form-group">
+                        <label for='fupload' class='col-sm-2 control-label'>Gambar</label>
+                        <div class='col-sm-10'>
+                          <input type=file name='fupload' id="fupload">
+                          <br>Tipe gambar harus JPG/JPEG/PNG dan ukuran lebar maks: 400 px
+                        </div>
+                      </div>
+
+                      <!-- PILIHAN JAWABAN A -->
+                      <div class='form-group'>
+                        <label for='a' class='col-sm-2 control-label'>Jawaban A</label>
+                        <div class='col-sm-12'>
+                          <input type=text name='a' id="a" class='form-control' size=80 required />
+                        </div>
+                      </div>
+
+                      <!-- PILIHAN JAWABAN B -->
+                      <div class='form-group'>
+                        <label for='b' class='col-sm-2 control-label'>Jawaban B</label>
+                        <div class='col-sm-12'>
+                          <input type=text name='b' id="b" class='form-control' size=80 required />
+                        </div>
+                      </div>
+
+                      <!-- PILIHAN JAWABAN C -->
+                      <div class='form-group'>
+                        <label for='c' class='col-sm-2 control-label'>Jawaban C</label>
+                        <div class='col-sm-12'>
+                          <input type=text name='c' id="c" class='form-control' size=80 required />
+                        </div>
+                      </div>
+
+                      <!-- PILIHAN JAWABAN D -->
+                      <div class='form-group'>
+                        <label for='d' class='col-sm-2 control-label'>Jawaban D</label>
+                        <div class='col-sm-12'>
+                          <input type=text name='d' id="d" class='form-control' size=80 required />
+                        </div>
+                      </div>
+
+                      <!-- PILIHAN JAWABAN E -->
+                      <div class='form-group'>
+                        <label for='e' class='col-sm-2 control-label'>Jawaban E</label>
+                        <div class='col-sm-12'>
+                          <input type=text name='e' id="e" class='form-control' size=80 required />
+                        </div>
+                      </div>
+
+                      <!-- KUNCI JAWABAN -->
+                      <div class='form-group'>
+                        <label for='kunci' class='col-sm-2 control-label'>Kunci Jawaban</label>
+                        <div class='col-sm-4'>
+                          <select name='knc_jawaban' id="kunci" class='form-control'>
+                            <option value='A'>A</option>
+                            <option value='B'>B</option>
+                            <option value='C'>C</option>
+                            <option value='D'>D</option>
+                            <option value='E'>E</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <!-- KATEGORI SOAL -->
+                      <div class='form-group'>
+                        <label for='kategori' class='col-sm-2 control-label'>Kategori Soal</label>
+                        <div class='col-sm-4'>
+                          <select name='kategori_soal' id="kategori" class='form-control'>
+                            <?php while ($kategori = mysqli_fetch_assoc($kategoriSoal)) : ?>
+                              <option value='<?= $kategori['id'] ?>'><?= $kategori['kategori']; ?></option>
+                            <?php endwhile; ?>
+                          </select>
+                        </div>
+                      </div>
+
+                      <!-- ACTION BUTTON -->
+                      <div class='form-group'>
+                        <label for='buttonAction' class='col-sm-2 control-label'></label>
+                        <div class='col-sm-4'>
+                          <button class='btn btn-primary' type='submit' name='submit'><i class='fa fa-save mr-1'></i>Simpan</button>
+                          <input type=button value=Batal onclick=self.history.back() class='btn btn-danger'>
+                        </div>
+                      </div>
+                    </form>
+                    <?php break; ?>
+
+                  <?php
+                case 'editsoal': ?>
+                    <h2 class="mb-3">
+                      <i class="fa fa-edit mr-2"></i>Edit Soal Tes
+                    </h2>
+                    <hr />
+                    <form method="POST" action="<?= $aksi ?>?module=soal&act=update" class="form-horizontal" enctype="multipart/form-data">
+                      <input type="hidden" name="id" value="<?= $edit['id']; ?>">
+
+                      <!-- SOAL FORM -->
+                      <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">Pertanyaan</label>
+                        <div class="col-lg-10">
+                          <textarea name="soal" style="width: 950px; height: 350px;"><?= $edit['soal']; ?></textarea>
+                        </div>
+                      </div>
+
+                      <!-- IMAGE THUMB -->
+                      <?php if ($edit['gambar'] != '') : ?>
+                        <div class="form-group">
+                          <label for="img" class="col-sm-2 control-label"></label>
+                          <div class="col-sm-10">
+                            <img src="../foto/<?= $edit['gambar']; ?>" alt="img" class="img-thumbnail">
                           </div>
                         </div>
+                      <?php endif; ?>
 
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Gambar</label>
-                          <div class='col-sm-10'>
-                            <input type=file name='fupload' size=40> 
-                                          <br>Tipe gambar harus JPG/JPEG dan ukuran lebar maks: 400 px
-                          </div>
+                      <!-- IMAGE FORM -->
+                      <div class="form-group">
+                        <label for="img" class="col-sm-2 control-label">Gambar</label>
+                        <div class="col-sm-10">
+                          <input type="file" name="fupload" id="img" size="40">
+                          <br>Tipe gambar harus JPG/JPEG dan ukuran lebar maks: 400 px
                         </div>
+                      </div>
 
-
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Jawaban A</label>
-                          <div class='col-sm-12'>
-                            <input type=text name='a' class='form-control' size=80 required/>
-                          </div>
+                      <!-- JAWABAN A -->
+                      <div class='form-group'>
+                        <label for='a' class='col-sm-2 control-label'>Jawaban A</label>
+                        <div class='col-sm-4'>
+                          <input type=text name='a' id="a" class='form-control' value="<?= $edit['a'] ?>" size=80 required />
                         </div>
+                      </div>
 
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Jawaban B</label>
-                          <div class='col-sm-12'>
-                            <input type=text name='b' class='form-control' size=80 required/>
-                          </div>
+                      <!-- JAWABAN B -->
+                      <div class='form-group'>
+                        <label for='b' class='col-sm-2 control-label'>Jawaban B</label>
+                        <div class='col-sm-4'>
+                          <input type=text name='b' id="b" class='form-control' value="<?= $edit['b'] ?>" size=80 required />
                         </div>
+                      </div>
 
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Jawaban C</label>
-                          <div class='col-sm-12'>
-                            <input type=text name='c' class='form-control' size=80 required/>
-                          </div>
+                      <!-- JAWABAN C -->
+                      <div class='form-group'>
+                        <label for='c' class='col-sm-2 control-label'>Jawaban C</label>
+                        <div class='col-sm-4'>
+                          <input type=text name='c' id="c" class='form-control' value="<?= $edit['c'] ?>" size=80 required />
                         </div>
+                      </div>
 
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Jawaban D</label>
-                          <div class='col-sm-12'>
-                            <input type=text name='d' class='form-control' size=80 required/>
-                          </div>
+                      <!-- JAWABAN D -->
+                      <div class='form-group'>
+                        <label for='a' class='col-sm-2 control-label'>Jawaban D</label>
+                        <div class='col-sm-4'>
+                          <input type=text name='d' id="d" class='form-control' value="<?= $edit['d'] ?>" size=80 required />
                         </div>
+                      </div>
 
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Jawaban E</label>
-                          <div class='col-sm-12'>
-                            <input type=text name='e' class='form-control' size=80 required/>
-                          </div>
+                      <!-- JAWABAN E -->
+                      <div class='form-group'>
+                        <label for='e' class='col-sm-2 control-label'>Jawaban E</label>
+                        <div class='col-sm-4'>
+                          <input type=text name='e' id="e" class='form-control' value="<?= $edit['e'] ?>" size=80 required />
                         </div>
+                      </div>
 
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Kunci Jawaban</label>
-                          <div class='col-sm-4'>
-                            <select name='knc_jawaban' class='form-control'>
-                            <option value='a'>A</option>
-                            <option value='b'>B</option>
-                            <option value='c'>C</option>
-                            <option value='d'>D</option>
-                            <option value='e'>E</option>
-                            </select>
-                          </div>
+                      <!-- KUNCI JAWABAN -->
+                      <div class='form-group'>
+                        <label for='kunci' class='col-sm-2 control-label'>Kunci Jawaban</label>
+                        <div class='col-sm-4'>
+                          <select name='knc_jawaban' id='kunci' class='form-control'>
+                            <option value='A' <?= ($edit['kunci']) == 'A' ? 'selected' : '' ?>>A</option>
+                            <option value='B' <?= ($edit['kunci']) == 'B' ? 'selected' : '' ?>>B</option>
+                            <option value='C' <?= ($edit['kunci']) == 'C' ? 'selected' : '' ?>>C</option>
+                            <option value='D' <?= ($edit['kunci']) == 'D' ? 'selected' : '' ?>>D</option>
+                            <option value='E' <?= ($edit['kunci']) == 'E' ? 'selected' : '' ?>>E</option>
+                          </select>
                         </div>
+                      </div>
 
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'></label>
-                          <div class='col-sm-4'>
-                        <button class='btn btn-primary' type='submit' name='submit'><i class='fa fa-save mr-1'></i>Simpan</button>
-                        <input type=button value=Batal onclick=self.history.back() class='btn btn-danger'>
+                      <!-- KATEGORI SOAL -->
+                      <div class='form-group'>
+                        <label for='kategori' class='col-sm-2 control-label'>Kategori Soal</label>
+                        <div class='col-sm-4'>
+                          <select name='kategori_soal' id="kategori" class='form-control'>
+                            <?php while ($kategori = mysqli_fetch_assoc($kategoriSoal)) : ?>
+                              <option value='<?= $kategori['id'] ?>' <?= ($edit['id_kategori']) == $kategori['id'] ? 'selected' : '' ?>><?= $kategori['kategori']; ?></option>
+                            <?php endwhile; ?>
+                          </select>
                         </div>
+                      </div>
+
+                      <!-- ACTION BUTTON -->
+                      <div class='form-group'>
+                        <label for='inputEmail3' class='col-sm-2 control-label'></label>
+                        <div class='col-sm-4'>
+                          <button class='btn btn-primary' type='submit' name='submit'><i class='fa fa-save mr-1'></i>Simpan</button>
+                          <input type=button value=Batal onclick=self.history.back() class='btn btn-danger'>
                         </div>
-                  </form>";
-                    break;
+                      </div>
+                    </form>
+                    <?php break; ?>
 
-                    // Form Edit Soal  
-                  case "editsoal":
-                    $edit = mysqli_query($conn, "SELECT * FROM tbl_soal WHERE id_soal='$_GET[id]'");
-                    $r = mysqli_fetch_array($edit);
+                  <?php
+                case 'viewsoal': ?>
+                    <h2>
+                      <i class="fa fa-eye mr-2"></i>Detail Soal
+                    </h2>
+                    <hr>
+                    <div class="container">
+                      <a href="?module=soal" class="btn btn-success mb-4">Kembali</a>
+                      <h5>Soal Pertanyaan :</h5>
+                      <?= $view['soal'] ?><br>
+                      <?php if ($view['gambar'] != '') : ?>
+                        <img src="../foto/<?= $view['gambar']; ?>" alt="img" class="img-thumbnail mt-2 mb-2">
+                      <?php endif; ?>
+                      <h5>Jawaban :</h5>
+                      a. <?= $view['a']; ?> <br>
+                      b. <?= $view['b']; ?> <br>
+                      c. <?= $view['c']; ?> <br>
+                      d. <?= $view['d']; ?> <br>
+                      e. <?= $view['e']; ?> <br>
+                      <h5>Kunci Jawaban : <?= $view['kunci']; ?></h5>
+                    </div>
+                    <?php break; ?>
 
-                    echo "<h2 class='mb-3'><i class='fa fa-edit mr-2'></i>Edit Soal Tes</h2><hr/>
-          <form method=POST action=$aksi?module=soal&act=update class='form-horizontal' enctype='multipart/form-data'>
-          <input type=hidden name=id value='$r[id_soal]'>
-
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Pertanyaan</label>
-                          <div class='col-lg-10'>
-                            <textarea name='soal' style='width: 950px; height: 350px;'>$r[soal]</textarea>
-                          </div>
-                        </div>";
-                    if ($r['gambar'] != '') {
-
-                      echo "
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'></label>
-                          <div class='col-sm-10'>
-                            <img src='../foto/$r[gambar]' class='img-thumbnail'>
-                          </div>
-                        </div>
-
-                        ";
-                    }
-
-                    echo "
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Gambar</label>
-                          <div class='col-sm-10'>
-                            <input type=file name='fupload' size=40> 
-                                          <br>Tipe gambar harus JPG/JPEG dan ukuran lebar maks: 400 px
-                          </div>
-                        </div>
-
-
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Jawaban A</label>
-                          <div class='col-sm-4'>
-                            <input type=text name='a' class='form-control' value='$r[a]' size=80 required/>
-                          </div>
-                        </div>
-
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Jawaban B</label>
-                          <div class='col-sm-4'>
-                            <input type=text name='b' value='$r[b]' class='form-control' size=80 required/>
-                          </div>
-                        </div>
-
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Jawaban C</label>
-                          <div class='col-sm-4'>
-                            <input type=text name='c' value='$r[c]' class='form-control' size=80 required/>
-                          </div>
-                        </div>
-
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Jawaban D</label>
-                          <div class='col-sm-4'>
-                            <input type=text name='d' value='$r[d]' class='form-control' size=80 required/>
-                          </div>
-                        </div>
-
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Jawaban E</label>
-                          <div class='col-sm-4'>
-                            <input type=text name='e' value='$r[e]' class='form-control' size=80 required/>
-                          </div>
-                        </div>
-
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'>Kunci Jawaban</label>
-                          <div class='col-sm-4'>
-                            <select name='knc_jawaban' id='knc_jawaban' class='form-control'>
-                            <option value='a'>A</option>
-                            <option value='b'>B</option>
-                            <option value='c'>C</option>
-                            <option value='d'>D</option>
-                            <option value='e'>E</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div class='form-group'>
-                          <label for='inputEmail3' class='col-sm-2 control-label'></label>
-                          <div class='col-sm-4'>
-                        <button class='btn btn-primary' type='submit' name='submit'><i class='fa fa-save mr-1'></i>Simpan</button>
-                        <input type=button value=Batal onclick=self.history.back() class='btn btn-danger'>
-                        </div>
-                        </div>
-
-        </form>";
-                    break;
-
-                  case "viewsoal":
-                    $view = mysqli_query($conn, "SELECT * FROM tbl_soal WHERE id_soal='$_GET[id]'");
-                    $t = mysqli_fetch_array($view);
-                    echo "<h2><i class='fa fa-eye mr-2'></i>Detail Soal</h2><hr>
-    <div class='container'>
-    <a class='btn btn-success mb-4' href='?module=soal'>Kembali</a>
-    <h5>Soal Pertanyaan :</h5>
-    $t[soal]</br>";
-                    if ($t['gambar'] != '') {
-                      echo "<img src='../foto/$t[gambar]' class='img-thumbnail mt-2 mb-2'>";
-                    }
-                    echo "<h5>Jawaban :</h5>
-    a. $t[a] </br>
-    b. $t[b] </br>
-    c. $t[c] </br>
-    d. $t[d] </br>
-    e. $t[e] </br>";
-                    echo "<h5>Kunci Jawaban : $t[knc_jawaban]</h5> 
-    </div>";
-
-                    break;
-
-                  case "carisoal":
-                    echo "<h2><i class='fa fa-search mr-3'></i>Hasil Pencarian</h2><hr/>
-       <a class='btn btn-success mt-1 mb-1' href='?module=soal' role='button'><i class='fa fa-sign-out-alt mr-1'></i>Kembali</a>
-     <table class='table table-hover mt-3'>
-          <thead><tr align='center'><th>No</th><th>Pertanyaan</th><th>Status</th><th>Aksi</th><th>Status</th><th>Lihat</th></tr></thead>";
-                    $tampil = mysqli_query($conn, "SELECT * FROM tbl_soal WHERE soal LIKE '%$_POST[cari]%'");
-                    $no = 1;
-                    while ($r = mysqli_fetch_array($tampil)) {
-                      echo "<tr><td align='center'>$no</td>
-             <td>$r[soal]</td>
-       <td align='center'>$r[aktif]</td>
-             <td align='center'>
-        <a class='btn btn-outline-primary' href=?module=soal&act=editsoal&id=$r[id_soal] role='button'><i class='fa fa-edit mr-1'></i></a>
-        <a class='btn btn-outline-danger' href=$aksi?module=soal&act=hapus&id=$r[id_soal] role='button'><i class='fa fa-trash mr-1'></i></a></td>";
-                      if ($r['aktif'] == "Y") {
-                        echo "<td align='center'><input class='btn btn-outline-dark' type=button value='Non Aktifkan' onclick=\"window.location.href='$aksi?module=soal&act=nonaktif&id=$r[id_soal]';\"></td>";
-                      } else {
-                        echo "<td align='center'><input class='btn btn-success' type=button value='Aktifkan' onclick=\"window.location.href='$aksi?module=soal&act=aktif&id=$r[id_soal]';\"></td>";
-                      }
-
-                      echo "   </td>
-    <td align='center'><a class='btn btn-outline-info' href=?module=soal&act=viewsoal&id=$r[id_soal] role='button'><i class='fa fa-eye mr-1'></i></a></td>
-
-    </tr>";
-                      $no++;
-                    }
-                    echo "</table>";
-                    break;
-                }
-              }
-              ?>
-
+                  <?php
+                case 'carisoal': ?>
+                    <h2>
+                      <i class="fa fa-search mr-3"></i>
+                      Hasil Pencarian
+                    </h2>
+                    <hr>
+                    <a href="?module=soal" role="button" class="btn btn-success mt-1 mb-1">
+                      <i class="fa fa-sign-out-alt mr-1"></i>
+                      Kembali
+                    </a>
+                    <table class="table table-hover mt-3">
+                      <thead class="table-dark">
+                        <tr align="center">
+                          <th>No</th>
+                          <th>Pertanyaan</th>
+                          <th>Status</th>
+                          <th>Aksi</th>
+                          <th>Status</th>
+                          <th>Lihat</th>
+                        </tr>
+                      </thead>
+                      <?php while ($soal = mysqli_fetch_assoc($cariSoal)) : ?>
+                        <?php $id = $soal['id']; ?>
+                        <tr>
+                          <td align="center">
+                            <?= $noSoal; ?>
+                          <td><?= $soal['soal']; ?></td>
+                          <td align="center"><?= $soal['aktif']; ?></td>
+                          <td align="center">
+                            <a href="?module=soal&act=editsoal&id=<?= $id; ?>" role="button" class="btn btn-outline-primary">
+                              <i class="fa fa-edit mr-1"></i>
+                            </a>
+                            <a class='btn btn-outline-danger' href="<?= $aksi; ?>?module=soal&act=hapus&id=<?= $id; ?>" role='button'><i class='fa fa-trash mr-1'></i></a>
+                          </td>
+                          <?php if ($soal['aktif'] == 'Y') : ?>
+                            <td align='center'>
+                              <input class='btn btn-outline-dark' type="button" value='Non- Aktifkan' onclick="window.location.href='<?= $aksi ?>?module=soal&act=nonaktif&id=$<?= $id ?> ';">
+                            </td>
+                          <?php else : ?>
+                            <td align='center'>
+                              <input class='btn btn-outline-success' type="button" value='Aktifkan' onclick="window.location.href='<?= $aksi ?>?module=soal&act=aktif&id=$<?= $id ?> ';">
+                            </td>
+                          <?php endif; ?>
+                          <td align="center">
+                            <a href="?module=soal&act=viewsoal&id=<?= $id; ?>" role="button" class="btn btn-outline-info">
+                              <i class="fa fa-eye mr-1"></i>
+                            </a>
+                          </td>
+                        </tr>
+                        <?php $noSoal++; ?>
+                      <?php endwhile; ?>
+                    </table>
+                    <?php break; ?>
+                  </div>
+              <?php endswitch; ?>
             </div>
           </div>
         </div>
       </div>
-      <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
+    <script type="text/javascript">
+      var $ = jQuery;
+      $('#knc_jawaban').val('<?php echo $r['knc_jawaban']; ?>');
+    </script>
   </div>
-  <!-- /#page-wrapper -->
-
-
-  <script type="text/javascript">
-    var $ = jQuery;
-    $('#knc_jawaban').val('<?php echo $r['knc_jawaban']; ?>');
-  </script>
-</div>
 </div>

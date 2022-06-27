@@ -27,14 +27,7 @@ if ($umur > 17) {
     $nomor = $_POST['telp'];
     $alamat = $_POST['alamat'];
 
-    $simpan = "INSERT INTO tbl_user SET username=$username,
-                                      password=$password,
-                                      nama=$nama,
-                                      tgl_lahir=$tgl,
-                                      jk=$jk,
-                                      email=$email,
-                                      telp=$nomor,
-                                      alamat=$alamat";
+    $simpan = "INSERT INTO tbl_user SET username=$username, password=$password, nama=$nama, tgl_lahir=$tgl, jk=$jk, email=$email, telp=$nomor, alamat=$alamat";
     mysqli_query($conn, $simpan);
     echo '<script language="javascript">
     alert("Anda Berhasil Melakukan Registrasi");

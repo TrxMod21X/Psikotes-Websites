@@ -1,5 +1,5 @@
 <script>
 
-window.location.href='login.php';
+window.location.href='peserta/authentication/auth.php';
 
 </script>
